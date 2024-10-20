@@ -168,6 +168,82 @@
         table tr:last-child td:last-child {
             border-bottom-right-radius: 10px;
         }
+            @media only screen and (max-width: 768px) {
+        body {
+            display: block; /* Stack content vertically */
+            height: auto; /* Remove fixed height */
+            padding: 10px;
+            align-items: flex-start;
+        }
+
+        .container {
+            width: 100%;
+            margin: 20px auto;
+        }
+
+        .right-container {
+            margin-left: 0;
+            margin-top: 20px;
+            width: 100%;
+            display: flex;
+            justify-content: center; /* Center the content */
+        }
+
+        .sakura-container {
+            margin-left: 0; /* Center the image */
+            text-align: center; /* Ensure image is centered */
+        }
+
+        .sakura-img {
+            max-width: 120px; /* Smaller image for mobile */
+        }
+
+        .results {
+            width: 100%;
+            margin-left: 0;
+            margin-top: 20px;
+        }
+
+        h1, h2 {
+            font-size: 1.5rem; /* Smaller font size */
+            padding: 10px 5px;
+        }
+
+        form {
+            padding: 15px; /* Slightly smaller padding */
+        }
+
+        .input-row {
+            flex-direction: column; /* Stack input columns vertically */
+            gap: 10px; /* Smaller gap between inputs */
+        }
+
+        .input-column {
+            width: 100%; /* Full-width for inputs */
+        }
+
+        .store-input-container {
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .store-input {
+            width: 100%;
+        }
+
+        table {
+            font-size: 0.9rem; /* Adjust font size for table on mobile */
+        }
+
+        th, td {
+            padding: 8px; /* Smaller padding for cells */
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 10px;
+        }
+    }
 
     </style>
 </head>
