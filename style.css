@@ -1,0 +1,238 @@
+
+body {
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 600;
+    background-color: #FFE3E3;
+    margin: 0;
+    padding: 0;
+    color: #3A3A3A;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    overflow-y: auto;
+}
+.right-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 40px;
+    margin-top: 30px;
+    position: relative;
+}
+
+.container {
+    width: 600px;
+    max-width: 90%;
+    margin: 20px 40px 20px 80px;
+}
+h1 {
+    text-align: center;
+    color: #FCFCFC;
+    background-color: #D84C73;
+    padding: 10px;
+    border-radius: 5px;
+}
+h2 {
+    text-align: center;
+    color: #FCFCFC;
+    background-color: #D84C73;
+    padding: 10px;
+    border-radius: 5px;
+}
+form {
+    background-color: #FCFCFC;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+label {
+    display: block;
+    margin: 10px 0 5px;
+    font-weight: bold;
+}
+input, select {
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #E1E1E1;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+.input-row {
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+.input-column {
+    flex: 1;
+}
+.store-input-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: space-between;
+}
+.store-input {
+    flex: 1 1 calc(20% - 10px);
+}
+button {
+    margin-top: 20px;
+    padding: 12px 20px;
+    width: 100%;
+    background: linear-gradient(135deg, #D84C73, #627DAF);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+button:hover {
+    background: linear-gradient(135deg, #C13D5E, #506FA0);
+    transform: translateY(-3px);
+}
+button:active {
+    transform: translateY(0);
+}
+
+.sakura-container {
+    position: relative;
+    margin-bottom: -25px;
+    z-index: 10;
+    margin-left: -400px;
+}
+
+.sakura-img {
+    max-width: 150px;
+}
+
+.results {
+    width: 450px;
+    min-height: 200px;
+    padding: 20px;
+    background-color: #FAD4D4;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    margin-left: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 20px 0;
+    border: 2px solid #F48FB1;
+    border-radius: 10px;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #F48FB1;
+}
+
+th {
+    background-color: #D84C73;
+    color: white;
+}
+
+td {
+    background-color: #FCE4EC;
+}
+
+table tr:first-child th:first-child {
+    border-top-left-radius: 10px;
+}
+
+table tr:first-child th:last-child {
+    border-top-right-radius: 10px;
+}
+
+table tr:last-child td:first-child {
+    border-bottom-left-radius: 10px;
+}
+
+table tr:last-child td:last-child {
+    border-bottom-right-radius: 10px;
+}
+
+@media only screen and (max-width: 768px) {
+body {
+    display: block; 
+    height: auto; 
+    padding: 10px;
+    align-items: flex-start;
+}
+
+.container {
+    width: 100%;
+    margin: 20px auto;
+}
+
+.right-container {
+    margin-left: 0;
+    margin-top: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: center; 
+}
+
+.sakura-container {
+    margin-left: 0;
+    text-align: center;
+    margin-bottom: -25px;
+}
+
+.sakura-img {
+    max-width: 120px; 
+}
+
+.results {
+    width: 100%;
+    margin-left: 0;
+    margin-top: 20px;
+}
+
+h1, h2 {
+    font-size: 1.5rem;
+    padding: 10px 5px;
+}
+
+form {
+    padding: 15px; 
+}
+
+.input-row {
+    flex-direction: column; 
+    gap: 10px; 
+}
+
+.input-column {
+    width: 100%; 
+}
+
+.store-input-container {
+    flex-direction: column;
+    gap: 10px;
+}
+
+.store-input {
+    width: 100%;
+}
+
+table {
+    font-size: 0.9rem; 
+}
+
+th, td {
+    padding: 8px; 
+}
+
+button {
+    margin-top: 15px;
+    padding: 10px;
+}
