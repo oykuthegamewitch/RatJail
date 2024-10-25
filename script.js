@@ -89,14 +89,14 @@ document.getElementById('playerSelect').addEventListener('change', updatePlayerI
 
 const productionWindows = {
     tofu: 60,  
-    beans: 60
+    beans: 30
 };
 
 // Static data for ingredients per dish
 const dishIngredients = {
-    tofuPerDish: 3,  
-    beansPerDish: 2,  
-    pointsPerDish: 50
+    tofuPerDish: 2,  
+    beansPerDish: 4,  
+    pointsPerDish: 15
 };
 
 function formatTime(minutes) {
@@ -138,10 +138,10 @@ function calculatePlan() {
 
         if (allocateToTofu && tofuProduced < totalTofuNeeded) {
             tofuProduced += tofuFromStore;
-            storeAllocations.push({ store: store.store, ingredient: 'Tofu', produced: tofuFromStore.toFixed(2) });
+            storeAllocations.push({ store: store.store, ingredient: 'Pumpkin', produced: tofuFromStore.toFixed(2) });
         } else if (beansProduced < totalBeansNeeded) {
             beansProduced += beansFromStore;
-            storeAllocations.push({ store: store.store, ingredient: 'Beans', produced: beansFromStore.toFixed(2) });
+            storeAllocations.push({ store: store.store, ingredient: 'Eggs', produced: beansFromStore.toFixed(2) });
         }
 
         totalTofuProduced += tofuFromStore;
@@ -187,8 +187,8 @@ function displayResults(totalTofuProduced, totalBeansProduced, storeAllocations,
                 </tr>
             `).join('')}
         </table>
-        <p><strong>Total Tofu Produced:</strong> ${totalBeanProducedInHours.toFixed(2)} units</p>
-        <p><strong>Total Beans Produced:</strong> ${totalTofuProducedInHours.toFixed(2)} units</p>
+        <p><strong>Total Pumpkin Produced:</strong> ${totalBeanProducedInHours.toFixed(2)} units</p>
+        <p><strong>Total Eggs Produced:</strong> ${totalTofuProducedInHours.toFixed(2)} units</p>
         <p><strong>Total Dishes You Can Make:</strong> ${totalDishesInHours} dishes (out of ${dishesNeeded} needed)</p>
         <p><strong>Total Time:</strong> ${formattedTime}</p>`;
 }
