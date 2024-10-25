@@ -68,7 +68,7 @@ function updateStores() {
 
 function updatePlayerInfo() {
     const selectedIndex = playerSelect.value;
-    if (selectedIndex === "") return; 
+    if (selectedIndex === "") return;
 
     const selectedPlayer = players[selectedIndex];
 
@@ -92,7 +92,6 @@ const productionWindows = {
     beans: 30
 };
 
-// Static data for ingredients per dish
 const dishIngredients = {
     tofuPerDish: 2,  
     beansPerDish: 4,  
@@ -111,17 +110,9 @@ function calculatePlan() {
     const beansUnits = parseInt(document.getElementById('baseRateBeans').value) || 0;
     const numStores = parseInt(document.getElementById('numStores').value);
 
-    const dishesNeeded = Math.ceil(goalPoints / dishIngredients.pointsPerDish);
-    const totalTofuNeeded = dishesNeeded * dishIngredients.tofuPerDish;
-    const totalBeansNeeded = dishesNeeded * dishIngredients.beansPerDish;
-    
-
     let tofuProduced = 0;
     let beansProduced = 0;
-    let totalTofuProduced = 0;
-    let totalBeansProduced = 0;
     let storeAllocations = [];
-    let totalTime = 0;
 
     let stores = [];
     for (let i = 1; i <= numStores; i++) {
@@ -129,55 +120,56 @@ function calculatePlan() {
         stores.push({ store: i, multiplier: storeMultiplier });
     }
 
+    // Sort stores by multiplier (highest first)
     stores.sort((a, b) => b.multiplier - a.multiplier);
 
-    let allocateToTofu = true; 
-    stores.forEach(store => {
-        const tofuFromStore = (tofuUnits * store.multiplier);
-        const beansFromStore = (beansUnits * store.multiplier);
+    // Recipe requirements per dish
+    const tofuPerDish = dishIngredients.tofuPerDish;   // 2 units of Pumpkin per dish
+    const beansPerDish = dishIngredients.beansPerDish; // 4 units of Eggs per dish
 
-        if (allocateToTofu && tofuProduced < totalTofuNeeded) {
+    // Prioritize allocating high-multiplier stores to Pumpkin (Tofu)
+    stores.forEach(store => {
+        if (tofuProduced < (beansProduced / beansPerDish) * tofuPerDish) {
+            // Allocate to Pumpkin if Pumpkin production is lower than needed
+            const tofuFromStore = tofuUnits * store.multiplier;
             tofuProduced += tofuFromStore;
             storeAllocations.push({ store: store.store, ingredient: 'Pumpkin', produced: tofuFromStore.toFixed(2) });
-        } else if (beansProduced < totalBeansNeeded) {
+        } else {
+            // Allocate remaining stores to Eggs
+            const beansFromStore = beansUnits * store.multiplier * 2;  // Eggs produce faster
             beansProduced += beansFromStore;
             storeAllocations.push({ store: store.store, ingredient: 'Eggs', produced: beansFromStore.toFixed(2) });
         }
-
-        totalTofuProduced += tofuFromStore;
-        totalBeansProduced += beansFromStore;
-
-        allocateToTofu = !allocateToTofu;
     });
 
-    const tofuTimeNeeded = Math.ceil(totalTofuNeeded / totalTofuProduced) * productionWindows.tofu;
-    const beansTimeNeeded = Math.ceil(totalBeansNeeded / totalBeansProduced) * productionWindows.beans;
-    totalTime = Math.max(tofuTimeNeeded, beansTimeNeeded);  
-    displayResults(totalTofuProduced, totalBeansProduced, storeAllocations, totalTime);
+    // Calculate hourly production
+    const totalDishesFromPumpkin = Math.floor(tofuProduced / tofuPerDish);
+    const totalDishesFromEggs = Math.floor(beansProduced / beansPerDish);
+    const totalDishesPerHour = Math.min(totalDishesFromPumpkin, totalDishesFromEggs);  // The limiting factor
+
+    // Calculate how many hours are needed to reach the goal
+    const pointsPerHour = totalDishesPerHour * dishIngredients.pointsPerDish;
+    const hoursNeeded = Math.ceil(goalPoints / pointsPerHour);
+
+    // Display the results
+    displayHourlyResults(storeAllocations, tofuProduced, beansProduced, totalDishesPerHour, pointsPerHour, hoursNeeded);
 }
 
-function displayResults(totalTofuProduced, totalBeansProduced, storeAllocations, totalTime) {
-    const formattedTime = formatTime(totalTime); 
+function displayHourlyResults(storeAllocations, totalPumpkinProduced, totalEggsProduced, totalDishesPerHour, pointsPerHour, hoursNeeded) {
+    const goalPoints = parseInt(document.getElementById('goalPoints').value) || 0;  // Fetch the dynamic goal points
 
-    const goalPoints = parseInt(document.getElementById('goalPoints').value) || 0;
-    const dishesNeeded = Math.ceil(goalPoints / dishIngredients.pointsPerDish);
-
-    const totalTofuProducedInHours = totalTofuProduced * (totalTime / 60);
-    const totalBeanProducedInHours = totalBeansProduced * (totalTime / 60);
-    const totalDishesFromTofu = Math.floor(totalTofuProduced / dishIngredients.tofuPerDish);
-    const totalDishesFromBeans = Math.floor(totalBeansProduced / dishIngredients.beansPerDish);
-    const totalDishes = (Math.min(totalDishesFromTofu, totalDishesFromBeans)); 
-    const totalDishesInHours = totalDishes * (totalTime / 60);
+    // Sort storeAllocations by store number (store.store)
     storeAllocations.sort((a, b) => a.store - b.store);
 
     document.getElementById('results').innerHTML = `
         <h2>Results</h2>
-        <p>You will reach <b>${goalPoints}</b> points with <b>${dishesNeeded}</b> dishes in <b>${formattedTime}</b> with the following store allocation:</p>
+        <p>Hourly Production: <b>${totalDishesPerHour}</b> dishes, producing <b>${pointsPerHour}</b> points per hour.</p>
+        <p>To reach <b>${goalPoints}</b> points, you will need approximately <b>${hoursNeeded}</b> hours.</p>
         <table>
             <tr>
                 <th>Store</th>
                 <th>Allocated Ingredient</th>
-                <th>Produced Units</th>
+                <th>Produced Units (per hour)</th>
             </tr>
             ${storeAllocations.map(store => `
                 <tr>
@@ -187,8 +179,8 @@ function displayResults(totalTofuProduced, totalBeansProduced, storeAllocations,
                 </tr>
             `).join('')}
         </table>
-        <p><strong>Total Pumpkin Produced:</strong> ${totalBeanProducedInHours.toFixed(2)} units</p>
-        <p><strong>Total Eggs Produced:</strong> ${totalTofuProducedInHours.toFixed(2)} units</p>
-        <p><strong>Total Dishes You Can Make:</strong> ${totalDishesInHours} dishes (out of ${dishesNeeded} needed)</p>
-        <p><strong>Total Time:</strong> ${formattedTime}</p>`;
+        <p><strong>Total Eggs Produced Per Hour:</strong> ${totalEggsProduced.toFixed(2)} units</p>
+        <p><strong>Total Pumpkin Produced Per Hour:</strong> ${totalPumpkinProduced.toFixed(2)} units</p>
+        <p><strong>Total Dishes You Can Make Per Hour:</strong> ${totalDishesPerHour} dishes</p>`;
 }
+
