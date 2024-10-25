@@ -7,8 +7,8 @@ const players = [
     },
     {
         name: "Öykü",
-        numStores: 8,
-        multipliers: [2, 2, 2, 2, 1.5, 1.5, 1.5, 1.5]
+        numStores: 10,
+        multipliers: [2, 2, 2, 2, 2, 1.5, 1.5, 1.5, 1.5, 1.25]
     },
     {
         name: "franny",
